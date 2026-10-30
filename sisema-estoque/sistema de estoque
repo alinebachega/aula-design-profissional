@@ -1,0 +1,107 @@
+#Etapa A : Estrutura de dados
+import random
+
+estoque = {
+    "mouse": 10,
+    "monitor": 5,
+    "gabinete": 15,
+    "placa de video": 4,
+    "ssd": 15,
+    "teclado": 20,
+    "headset": 5,
+    "mousepad": 25,
+    "microfone": 10,
+    "webcam": 5,
+    "water cooler": 5,
+}
+
+historico = []
+prosseguir_opcao = 0
+while True:
+    print('\n===== MENU DE ESTOQUE =====')
+    print('1 - Consultar estoque')
+    print('2 - Retirar produto')
+    print('3 - Ver histórico de retiradas')
+    print('4 - Sair')
+
+    
+    opcao = int(input('\nEscolha uma opção: '))
+    if opcao == 1:
+        print('\n--- ESTOQUE ATUAL ---')
+        for produto, quantidade in estoque.items():
+            print(f'Produto: {produto} | Quantidade: {quantidade}')
+        prosseguir_opcao= int(input('\nSe você deseja prosseguir e realizar a retirada de algum produto digite 1, para sair digite 2: '))
+
+    if prosseguir_opcao == 2:
+        print('Encerrando programa...')
+        break
+
+    elif opcao == 2 or prosseguir_opcao == 1:
+
+        item_retirar = input('\nQual item você deseja retirar do estoque? ').lower()
+        if item_retirar in estoque:
+            qtd_item = int(input(f'\nQuantas unidades de "{item_retirar}" deseja retirar? '))
+            if qtd_item <= estoque[item_retirar]:
+
+                historico.append(item_retirar)
+                historico.append(qtd_item)
+
+                estoque[item_retirar] = estoque[item_retirar] - qtd_item
+                print(f'Retirada de {qtd_item} {item_retirar}(s)')
+                print(f"Retirada realizada com sucesso! Estoque restante de '{item_retirar}': {estoque[item_retirar]}")
+                retirar_novamente = input('\nVocê gostaria de retirar mais algum produto?(S/N) ').upper()
+
+            else:
+                print(f"Quantidade insuficiente! Temos apenas {estoque[item_retirar]} unidade(s) de '{item_retirar}' em estoque.")
+                retirar_novamente= input('você deseja inserir novamente um produto com uma quantidade valida?(S/N) ').upper()
+
+
+        else:
+            print(f"Produto '{item_retirar}' não encontrado no estoque.")
+            retirar_novamente= input('você deseja inserir novamente um produto?(S/N) ').upper()
+        while retirar_novamente == 'S':
+
+            item_retirar = input('\nQual item você deseja retirar do estoque? ').lower()
+            if item_retirar in estoque:
+                qtd_item = int(input(f'\nQuantas unidades de "{item_retirar}" deseja retirar? '))
+                if qtd_item <= estoque[item_retirar]:
+                    historico.append(item_retirar)
+                    historico.append(qtd_item)
+
+                    estoque[item_retirar] = estoque[item_retirar] - qtd_item
+                    print(f'Retirada de {qtd_item} {item_retirar}(s)')
+                    print(f"Retirada realizada com sucesso! Estoque restante de '{item_retirar}': {estoque[item_retirar]}")
+                    retirar_novamente = input('\nVocê gostaria de retirar mais algum produto?(S/N) ').upper()
+                else:
+                    print(f"Quantidade insuficiente! Temos apenas {estoque[item_retirar]} unidade(s) de '{item_retirar}' em estoque.")
+                    item_retirar = input('\nQual item você deseja retirar do estoque? ').lower()
+                    retirar_novamente= input('você deseja inserir novamente um produto com uma quantidade valida?(S/N) ').upper()
+
+            else:
+                print(f"Produto '{item_retirar}' não encontrado no estoque.")
+                retirar_novamente= input('você deseja inserir novamente um produto?(S/N) ').upper()
+
+        if retirar_novamente == 'N':
+            verificacao = input('voce deseja verificar o historico de itens retirados até o momento e sua quantidade?(S/N) ').upper()
+
+            if verificacao == 'S':
+                print("\n--- HISTÓRICO DE RETIRADAS ---")
+                if len(historico) == 0:
+                    print("Nenhuma retirada realizada ainda.")
+                else:
+                    print(f'Os itens retirados e suas quantidades até o momento foram: {historico}.')
+                    if historico:
+                        ganhador = random.choice(historico)
+                        print('\nEncerrando o sistema...')
+                        print(f'O item sorteado da rodada, baseado na movimentação de estoque foi [{ganhador}]!')
+                        break
+            elif verificacao == "N":
+                break
+
+    elif opcao == 3:
+        print("\n--- HISTÓRICO DE RETIRADAS ---")
+        if len(historico) == 0:
+            print("Nenhuma retirada realizada ainda.")
+        else:
+            print(f'Os itens retirados e suas quantidades até o momento foram: {historico}.')
+            break
