@@ -1,4 +1,6 @@
-#Etapa A : Estrutura de dados
+#SISTEMA DE ESTOQUE QUE CONTROLA RETIRADA DE PRODUTOS E COLSULTA ESTOQUE
+#SORTEIA UM ITEM A CADA RODADA
+#Estrutura de dados
 import random
 
 estoque = {
@@ -105,3 +107,4 @@ while True:
         else:
             print(f'Os itens retirados e suas quantidades até o momento foram: {historico}.')
             break
+        
