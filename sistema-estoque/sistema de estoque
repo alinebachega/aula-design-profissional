@@ -19,12 +19,98 @@ estoque = {
 
 historico = []
 prosseguir_opcao = 0
+LIMITE_BAIXO = 5
+
+def ler_numero(msg):
+    try:
+        valor = int(input(msg))
+        if valor <= 0:
+            print('Digite um número maior que zero.')
+            return None
+        return valor
+    except ValueError:
+        print('Valor inválido, digite apenas números.')
+        return None
+
+def estoque_baixo():
+    print('\n--- ALERTA DE ESTOQUE BAIXO ---')
+    baixos = [(p, q) for p, q in estoque.items() if q <= LIMITE_BAIXO]
+    if not baixos:
+        print('Nenhum produto com estoque baixo. Tudo certo! ✅')
+    for p, q in baixos:
+        if q == 0:
+            print(f'🔴 {p}: ESGOTADO')
+        else:
+            print(f'⚠️ {p}: apenas {q} unidade(s)')
+
+def repor_estoque():
+    print('\n--- REPOSIÇÃO DE ESTOQUE ---')
+    produto = input('Qual produto deseja repor? ').lower()
+    if produto not in estoque:
+        print(f"Produto '{produto}' não encontrado. Use a opção de cadastrar produto novo.")
+        return
+    qtd = ler_numero(f'Quantas unidades de "{produto}" chegaram? ')
+    if qtd:
+        estoque[produto] += qtd
+        print(f"Reposição feita! Estoque de '{produto}': {estoque[produto]}")
+
+def cadastrar_produto():
+    print('\n--- CADASTRAR PRODUTO NOVO ---')
+    produto = input('Nome do produto: ').lower().strip()
+    if produto == '':
+        print('O nome não pode ficar vazio.')
+    elif produto in estoque:
+        print('Esse produto já existe! Use a opção de repor estoque.')
+    else:
+        qtd = ler_numero('Quantidade inicial: ')
+        if qtd:
+            estoque[produto] = qtd
+            print(f"Produto '{produto}' cadastrado com {qtd} unidade(s)!")
+
+def buscar_produto():
+    print('\n--- BUSCAR PRODUTO ---')
+    termo = input('Digite parte do nome: ').lower().strip()
+    achados = {p: q for p, q in estoque.items() if termo in p}
+    if not achados:
+        print('Nenhum produto encontrado.')
+    for p, q in achados.items():
+        print(f'Produto: {p} | Quantidade: {q}')
+
+def relatorio():
+    print('\n===== RELATÓRIO DO ESTOQUE =====')
+    print(f'Produtos cadastrados: {len(estoque)}')
+    print(f'Total de unidades em estoque: {sum(estoque.values())}')
+
+    mais = max(estoque, key=estoque.get)
+    menos = min(estoque, key=estoque.get)
+    print(f'Maior estoque: {mais} ({estoque[mais]} un.)')
+    print(f'Menor estoque: {menos} ({estoque[menos]} un.)')
+
+    retiradas = {}
+    for i in range(0, len(historico), 2):
+        item, qtd = historico[i], historico[i + 1]
+        retiradas[item] = retiradas.get(item, 0) + qtd
+
+    if retiradas:
+        print('\nRetiradas por produto:')
+        for item, total in sorted(retiradas.items(), key=lambda x: x[1], reverse=True):
+            print(f'  {item}: {total} unidade(s) retirada(s)')
+        top = max(retiradas, key=retiradas.get)
+        print(f'\n🏆 Produto mais retirado: {top}')
+    else:
+        print('\nNenhuma retirada realizada ainda.')
+
 while True:
     print('\n===== MENU DE ESTOQUE =====')
     print('1 - Consultar estoque')
     print('2 - Retirar produto')
     print('3 - Ver histórico de retiradas')
     print('4 - Sair')
+    print('5 - Repor estoque')
+    print('6 - Cadastrar produto novo')
+    print('7 - Buscar produto')
+    print('8 - Alerta de estoque baixo')
+    print('9 - Relatório do estoque')
 
     
     opcao = int(input('\nEscolha uma opção: '))
@@ -107,4 +193,23 @@ while True:
         else:
             print(f'Os itens retirados e suas quantidades até o momento foram: {historico}.')
             break
+
+    if opcao == 4:
+        print('Encerrando programa...')
+        break
+    elif opcao == 5:
+        repor_estoque()
+        continue
+    elif opcao == 6:
+        cadastrar_produto()
+        continue
+    elif opcao == 7:
+        buscar_produto()
+        continue
+    elif opcao == 8:
+        estoque_baixo()
+        continue
+    elif opcao == 9:
+        relatorio()
+        continue
         
