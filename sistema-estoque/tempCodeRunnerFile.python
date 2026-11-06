@@ -1,0 +1,8 @@
+
+    else:
+        qtd = ler_numero('Quantidade inicial: ')
+        if qtd:
+            estoque[produto] = qtd
+            print(f"Produto '{produto}' cadastrado com {qtd} unidade(s)!")
+
+def buscar_produto():
