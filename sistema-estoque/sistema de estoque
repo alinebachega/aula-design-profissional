@@ -1,6 +1,6 @@
 #SISTEMA DE ESTOQUE QUE CONTROLA RETIRADA DE PRODUTOS E CONSULTA ESTOQUE E O HISTORICO DE RETIRADAS.
-#SORTEIA UM GANHADOR APOS ENCERAR A INTERACAO COM O PROGRAMA.
 
+#INICIO DO  COD
 import random
 
 estoque = {
@@ -21,6 +21,7 @@ historico = []
 prosseguir_opcao = 0
 LIMITE_BAIXO = 5
 
+#ESTRTURA DAS FUNÇÕES
 def ler_numero(msg):
     try:
         valor = int(input(msg))
@@ -100,6 +101,7 @@ def relatorio():
     else:
         print('\nNenhuma retirada realizada ainda.')
 
+#ESQUELETO DO COD
 while True:
     print('\n===== MENU DE ESTOQUE =====')
     print('1 - Consultar estoque')
@@ -212,4 +214,5 @@ while True:
     elif opcao == 9:
         relatorio()
         continue
-        
+
+#FIM DO CODIGO
